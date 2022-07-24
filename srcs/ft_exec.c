@@ -6,13 +6,13 @@
 /*   By: mykman <mykman@student.s19.be>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/22 22:10:33 by mykman            #+#    #+#             */
-/*   Updated: 2022/07/23 01:58:57 by mykman           ###   ########.fr       */
+/*   Updated: 2022/07/24 14:02:59 by mykman           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-char	*get_envpvar(char * const * envp, const char *varname)
+char	*get_envpvar(char **envp, const char *varname)
 {
 	int	i;
 
@@ -41,7 +41,7 @@ char	*test_path(char **path_list, char *cmd)
 	return (NULL);
 }
 
-char	*get_path(char *cmd, char * const *envp)
+char	*get_path(char *cmd, char **envp)
 {
 	char	**path_list;
 	char	*path;
@@ -58,7 +58,7 @@ char	*get_path(char *cmd, char * const *envp)
 	return (path);
 }
 
-int	ft_exec(const char *str, char * const *envp)
+int	ft_exec(const char *str, char **envp)
 {
 	char	**args;
 	char	*path;
@@ -70,5 +70,6 @@ int	ft_exec(const char *str, char * const *envp)
 	path = get_path(args[0], envp);
 	ret = execve(path, args, envp);
 	free(path);
+	free_tab((void **)args);
 	return (ret);
 }

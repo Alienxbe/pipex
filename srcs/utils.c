@@ -1,28 +1,39 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pipex.h                                            :+:      :+:    :+:   */
+/*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mykman <mykman@student.s19.be>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/07/10 00:26:06 by mykman            #+#    #+#             */
-/*   Updated: 2022/07/24 14:07:31 by mykman           ###   ########.fr       */
+/*   Created: 2022/07/24 14:06:52 by mykman            #+#    #+#             */
+/*   Updated: 2022/07/24 14:07:34 by mykman           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PIPEX_H
-# define PIPEX_H
+#include "pipex.h"
 
-# include <unistd.h>
-// wait() / waitpid()
-# include <sys/types.h>
-# include <sys/wait.h>
-# include "libft.h"
+void	ft_exit(char *error_msg, int error_val)
+{
+	ft_fprintf(STDERR_FILENO, "%s\n", error_msg);
+	exit(error_val);
+}
 
-int		ft_exec(const char *str, char **envp);
+void	free_tab(void **tab)
+{
+	int	i;
 
-void	ft_exit(char *error_msg, int error_val);
-void	print_tab(char **tab);
-void	free_tab(void **tab);
+	i = -1;
+	while (tab[++i])
+		free(tab[i]);
+	free(tab[i]);
+	free(tab);
+}
 
-#endif
+void	print_tab(char **tab)
+{
+	int	i;
+
+	i = -1;
+	while (tab[++i])
+		ft_printf("%s\n", tab[i]);
+}
