@@ -6,7 +6,7 @@
 /*   By: mykman <mykman@student.s19.be>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/24 14:06:52 by mykman            #+#    #+#             */
-/*   Updated: 2022/07/24 14:07:34 by mykman           ###   ########.fr       */
+/*   Updated: 2022/07/25 03:37:02 by mykman           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,6 @@ void	free_tab(void **tab)
 	i = -1;
 	while (tab[++i])
 		free(tab[i]);
-	free(tab[i]);
 	free(tab);
 }
 
@@ -36,4 +35,26 @@ void	print_tab(char **tab)
 	i = -1;
 	while (tab[++i])
 		ft_printf("%s\n", tab[i]);
+}
+
+void	close_pipe(int *pipefd)
+{
+	if (pipefd)
+	{
+		close(pipefd[0]);
+		close(pipefd[1]);
+	}
+}
+
+void	close_free_pipes(int **pipes)
+{
+	int	i;
+
+	i = -1;
+	while (pipes[++i])
+	{
+		close_pipe(pipes[i]);
+		free(pipes[i]);
+	}
+	free(pipes);
 }

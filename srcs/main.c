@@ -6,33 +6,32 @@
 /*   By: mykman <mykman@student.s19.be>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/10 00:26:06 by mykman            #+#    #+#             */
-/*   Updated: 2022/07/24 14:07:18 by mykman           ###   ########.fr       */
+/*   Updated: 2022/07/25 04:24:03 by mykman           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
+static void	ft_pipex(int argc, char const **argv, char **envp)
+{
+	int	**pipes;
+
+	pipes = create_pipes(argc - 4);
+	if (!pipes)
+		ft_exit("Could not create pipes", EXIT_FAILURE);
+	ft_pexec(argv[2], envp, (t_pipe){-1, pipes[0][1], pipes});
+	for (int i = 0; i < argc - 5; i++)
+		ft_pexec(argv[3 + i], envp, (t_pipe){pipes[i][0], pipes[i + 1][1], pipes});
+	ft_pexec(argv[argc - 2], envp, (t_pipe){pipes[argc - 5][0], -1, pipes});
+	close_free_pipes(pipes);
+	while (wait(NULL) > 0)
+		;
+}
+
 int main(int argc, char const **argv, char **envp)
 {
-	int	id;
-	int	id2;
-
-	if (argc != 5)
+	if (argc < 5)
 		ft_exit("Usage: ./pipex infile cmd1 cmd2 outfile", EXIT_FAILURE);
-	id = fork();
-	if (id == -1)
-		ft_exit("fork() failed", EXIT_FAILURE);
-	if (id == 0)
-		if (ft_exec(argv[2], envp) == -1)
-			ft_exit("Bad function call", EXIT_FAILURE);
-	id2 = fork();
-	if (id2 == -1)
-		ft_exit("fork() failed", EXIT_FAILURE);
-	if (id2 == 0)
-		if (ft_exec(argv[3], envp) == -1)
-			ft_exit("Bad function call", EXIT_FAILURE);
-	waitpid(id, NULL, 0);
-	waitpid(id2, NULL, 0);
-	ft_printf("Function executed with succes\n");
+	ft_pipex(argc, argv, envp);
 	return (0);
 }

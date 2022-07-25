@@ -6,7 +6,7 @@
 /*   By: mykman <mykman@student.s19.be>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/22 22:10:33 by mykman            #+#    #+#             */
-/*   Updated: 2022/07/24 14:02:59 by mykman           ###   ########.fr       */
+/*   Updated: 2022/07/25 04:27:42 by mykman           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,7 @@ int	ft_exec(const char *str, char **envp)
 		return (-1);
 	path = get_path(args[0], envp);
 	ret = execve(path, args, envp);
+	ft_fprintf(STDERR_FILENO, "%s: ", args[0]);
 	free(path);
 	free_tab((void **)args);
 	return (ret);
