@@ -6,12 +6,16 @@
 /*   By: mykman <mykman@student.s19.be>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/10 00:26:06 by mykman            #+#    #+#             */
-/*   Updated: 2022/07/25 04:24:03 by mykman           ###   ########.fr       */
+/*   Updated: 2022/07/25 04:40:11 by mykman           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
+/*
+** Should remove the pipes list and replace it by a clever
+** ft_pexec function
+*/
 static void	ft_pipex(int argc, char const **argv, char **envp)
 {
 	int	**pipes;
