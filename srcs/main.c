@@ -6,7 +6,7 @@
 /*   By: mykman <mykman@student.s19.be>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/10 00:26:06 by mykman            #+#    #+#             */
-/*   Updated: 2022/07/25 04:40:11 by mykman           ###   ########.fr       */
+/*   Updated: 2022/07/26 00:30:06 by mykman           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,18 +18,17 @@
 */
 static void	ft_pipex(int argc, char const **argv, char **envp)
 {
-	int	**pipes;
+	int	stdoutfd;
+	int	i;
 
-	pipes = create_pipes(argc - 4);
-	if (!pipes)
-		ft_exit("Could not create pipes", EXIT_FAILURE);
-	ft_pexec(argv[2], envp, (t_pipe){-1, pipes[0][1], pipes});
-	for (int i = 0; i < argc - 5; i++)
-		ft_pexec(argv[3 + i], envp, (t_pipe){pipes[i][0], pipes[i + 1][1], pipes});
-	ft_pexec(argv[argc - 2], envp, (t_pipe){pipes[argc - 5][0], -1, pipes});
-	close_free_pipes(pipes);
-	while (wait(NULL) > 0)
-		;
+	stdoutfd = dup(STDOUT_FILENO);
+	i = 1;
+	while (++i < argc - 2)
+		ft_pexec(argv[i], envp);
+	dup2(STDOUT_FILENO, stdoutfd);
+	close(stdoutfd);
+	close(STDOUT_FILENO);
+	ft_exec(argv[i], envp);
 }
 
 int main(int argc, char const **argv, char **envp)

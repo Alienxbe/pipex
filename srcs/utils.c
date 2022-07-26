@@ -6,7 +6,7 @@
 /*   By: mykman <mykman@student.s19.be>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/24 14:06:52 by mykman            #+#    #+#             */
-/*   Updated: 2022/07/25 03:37:02 by mykman           ###   ########.fr       */
+/*   Updated: 2022/07/26 00:15:18 by mykman           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,17 +44,4 @@ void	close_pipe(int *pipefd)
 		close(pipefd[0]);
 		close(pipefd[1]);
 	}
-}
-
-void	close_free_pipes(int **pipes)
-{
-	int	i;
-
-	i = -1;
-	while (pipes[++i])
-	{
-		close_pipe(pipes[i]);
-		free(pipes[i]);
-	}
-	free(pipes);
 }
